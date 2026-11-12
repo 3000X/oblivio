@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Oblivio</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <img src="icons/icon48.png" alt="" width="24" height="24">
+    <h1 data-i18n="appTitle"></h1>
+    <div class="lang" role="group" aria-label="Langue / Language">
+      <button type="button" id="lang-fr" title="Français" aria-label="Français">
+        <svg viewBox="0 0 3 2" preserveAspectRatio="none" aria-hidden="true">
+          <rect width="1" height="2" fill="#0055a4"/>
+          <rect x="1" width="1" height="2" fill="#fff"/>
+          <rect x="2" width="1" height="2" fill="#ef4135"/>
+        </svg>
+      </button>
+      <button type="button" id="lang-en" title="English" aria-label="English">
+        <svg viewBox="0 0 60 30" preserveAspectRatio="none" aria-hidden="true">
+          <rect width="60" height="30" fill="#012169"/>
+          <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/>
+          <path d="M0,0 L60,30 M60,0 L0,30" stroke="#c8102e" stroke-width="2"/>
+          <path d="M30,0 V30 M0,15 H60" stroke="#fff" stroke-width="10"/>
+          <path d="M30,0 V30 M0,15 H60" stroke="#c8102e" stroke-width="6"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Rien à faire ici (pas sur Discord…) -->
+    <section id="view-info" hidden>
+      <p id="info-text"></p>
+    </section>
+
+    <!-- Réglages avant de lancer -->
+    <section id="view-setup" hidden>
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" id="tab-single" aria-controls="panel-single" data-i18n="tabSingle"></button>
+        <button type="button" role="tab" id="tab-mass" aria-controls="panel-mass" data-i18n="tabMass"></button>
+      </div>
+
+      <div id="panel-single" role="tabpanel" aria-labelledby="tab-single">
+        <div class="card" id="single-card">
+          <span id="single-avatar"></span>
+          <div class="card-text">
+            <p class="label" data-i18n="openConv"></p>
+            <p class="conv" id="conv-name"></p>
+          </div>
+        </div>
+        <p class="empty" id="single-empty" data-i18n="singleEmpty" hidden></p>
+      </div>
+
+      <div id="panel-mass" role="tabpanel" aria-labelledby="tab-mass" hidden>
+        <input type="search" id="mass-search" data-i18n-ph="searchPh" data-i18n-aria="searchPh">
+        <label class="check all">
+          <input type="checkbox" id="mass-all">
+          <span data-i18n="selectAll"></span>
+          <span class="count" id="mass-count"></span>
+        </label>
+        <ul class="list" id="mass-list"></ul>
+        <p class="empty" id="mass-status" hidden></p>
+      </div>
+
+      <details id="options">
+        <summary><span data-i18n="options"></span> <span class="badge" id="options-badge" hidden></span></summary>
+        <div class="options-body">
+          <div class="field">
+            <label for="opt-period" data-i18n="period"></label>
+            <select id="opt-period">
+              <option value="all" data-i18n="periodAll"></option>
+              <option value="older" data-i18n="periodOlder"></option>
+              <option value="range" data-i18n="periodRange"></option>
+            </select>
+          </div>
+          <div class="field" id="row-older" hidden>
+            <span></span>
+            <div class="inline">
+              <input type="number" id="opt-days" min="1" step="1" value="30" data-i18n-aria="ariaDays">
+              <span data-i18n="days"></span>
+            </div>
+          </div>
+          <div class="field two" id="row-range" hidden>
+            <input type="date" id="opt-from" data-i18n-aria="ariaFrom">
+            <span data-i18n="rangeTo"></span>
+            <input type="date" id="opt-to" data-i18n-aria="ariaTo">
+          </div>
+          <div class="field">
+            <label for="opt-keyword" data-i18n="containing"></label>
+            <input type="text" id="opt-keyword" data-i18n-ph="keywordPh">
+          </div>
+          <div class="field">
+            <span class="flabel" data-i18n="onlyWith"></span>
+            <div class="inline">
+              <label class="check"><input type="checkbox" id="opt-files"> <span data-i18n="attachment"></span></label>
+              <label class="check"><input type="checkbox" id="opt-links"> <span data-i18n="link"></span></label>
+            </div>
+          </div>
+          <div class="field">
+            <label for="opt-keep" data-i18n="keepMy"></label>
+            <div class="inline">
+              <input type="number" id="opt-keep" min="0" step="1" value="0">
+              <span data-i18n="lastMessages"></span>
+            </div>
+          </div>
+          <p class="warn" id="options-error"></p>
+          <button type="button" class="link" id="opt-reset" data-i18n="resetOptions"></button>
+        </div>
+      </details>
+
+      <button type="button" class="danger" id="btn-start"></button>
+      <p class="hint" data-i18n="startHint"></p>
+    </section>
+
+    <!-- Analyse / confirmation / suppression / résultat -->
+    <section id="view-job" hidden>
+      <p class="status" id="job-title"></p>
+      <div class="bar" id="bar"><div id="bar-fill"></div></div>
+      <p class="big" id="job-big" hidden></p>
+      <p id="job-line"></p>
+      <p class="hint" id="job-detail"></p>
+      <ul class="chips" id="job-filters"></ul>
+      <ul class="list small" id="job-breakdown" hidden></ul>
+      <p class="warn" id="job-note"></p>
+      <p class="hint" id="job-hint"></p>
+      <div class="row">
+        <button type="button" id="btn-secondary"></button>
+        <button type="button" id="btn-primary"></button>
+      </div>
+    </section>
+  </main>
+
+  <script src="shared.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
